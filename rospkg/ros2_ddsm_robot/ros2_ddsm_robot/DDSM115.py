@@ -282,47 +282,6 @@ class DDSM115(object):
         # send command
         self._send_com(cmd_bytes)
         
-        """
-        buffer = self._send_com(cmd_bytes)
-        
-        if( len(buffer) != 10 ):
-            print('reply error')
-            return None
-            
-        if( buffer[9] != self._crc8( bytes(buffer[:-1]) ) ):
-            print( 'invalid CRC' )
-            return None
-        
-        # parse responce
-        fb_id   = buffer[0]
-        fb_mode = buffer[1]
-        fb_cur  = self._bytesarray_to_int16( buffer[2], buffer[3] )  # current
-        fb_rpm  = self._bytesarray_to_int16( buffer[4], buffer[5] )  # velocity
-        fb_tmp  = buffer[6] # temperature
-        fb_pos  = buffer[7] # position
-        fb_err  = buffer[8] # error
-
-        if( fb_err != 0 ):
-            sensor_error       = fb_err & 0b00000001
-            over_current_error = fb_err & 0b00000010
-            phase_over_error   = fb_err & 0b00000100
-            stall_error        = fb_err & 0b00001000
-            troubleshoot_error = fb_err & 0b00001000
-            print_warning(f"error {fb_err}")
-            print_warning(f"sens_err: {sensor_error} phase_err: {phase_over_error} stall_err: {stall_error} trbs_err: {troubleshoot_error}")
-            
-        ret = {}
-        ret['device_id']    = fb_id
-        ret['mode']         = fb_mode
-        ret['current']      = self._map( fb_cur, -32767, 32767, -8.0, 8.0 )        
-        ret['velocity']     = float(fb_rpm)
-        ret['position']     = self._map( fb_pos, 0, 255, 0.0, 360.0 )
-        ret['temperature']  = float(fb_tmp)
-        ret['error']        = fb_err        
-
-        return ret
-        """
-        
 
     # reply motor status
     def get_motor_state( self, device_id: int ):

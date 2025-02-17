@@ -22,7 +22,7 @@ setup(
         'console_scripts': [
             'imu        = ros2_ddsm_robot.ros2_ddsm_robot_imu:main',
             'controller = ros2_ddsm_robot.ros2_ddsm_robot_controller:main',
-            
+            'id_setting = ros2_ddsm_robot.ros2_ddsm_id_setting:main',
         ],
     },
 )
