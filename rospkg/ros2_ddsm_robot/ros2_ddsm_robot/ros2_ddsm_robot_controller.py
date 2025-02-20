@@ -44,7 +44,7 @@ class ros2_ddsm_robot_controller(Node):
 
         # control
         self._rot_vel     = 0.0
-        self._trans_vel   = 1.0
+        self._trans_vel   = 0.0
         
         # odometry
         self._x           = 0
@@ -70,8 +70,8 @@ class ros2_ddsm_robot_controller(Node):
 
     # callback
     def _callback_cmdvel( self, msg ):
-        self._rot_vel     = msg.linear.x
-        self._trans_vel   = msg.angular.z
+        self._trans_vel   = msg.linear.x
+        self._rot_vel     = msg.angular.z
         self._last_cmdvel = Clock().now()
         return
 
@@ -84,8 +84,8 @@ class ros2_ddsm_robot_controller(Node):
     
         _left_rpm  = int( (self._trans_vel - self._wheel_tread*0.5*self._rot_vel) * 30.0/(np.pi*self._wheel_radius) )
         _right_rpm = int( (self._trans_vel + self._wheel_tread*0.5*self._rot_vel) * 30.0/(np.pi*self._wheel_radius) )
-        self._state_left  = self._ddsm.send_velocity(self._left_id,  _left_rpm)
-        self._state_right = self._ddsm.send_velocity(self._right_id, _right_rpm)
+        self._state_left  = self._ddsm.send_velocity(self._left_id,   _left_rpm)
+        self._state_right = self._ddsm.send_velocity(self._right_id, -_right_rpm)
         
         if( self._state_left == None or self._state_right == None ):
             return
